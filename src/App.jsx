@@ -266,23 +266,34 @@ export default function App() {
     });
     
     const sortedResults = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    
+    // Find the highest score to highlight ties appropriately
+    const highestScore = sortedResults.length > 0 ? sortedResults[0][1] : 0;
 
     return (
       <div className="flex flex-col items-center justify-start h-full p-6 w-full max-w-md mx-auto overflow-y-auto">
         <h2 className="retro-font text-yellow-400 text-xl text-center mb-8">HIGH SCORES</h2>
         
         <div className="w-full bg-[#141826] border-4 border-blue-700 p-4 mb-8">
-          {sortedResults.map(([category, count], idx) => (
-            <div key={category} className="flex items-center justify-between retro-font text-[10px] text-white my-3">
-              <span className={idx === 0 ? 'text-green-400' : 'text-gray-300'}>
-                {idx + 1}. {category}
-              </span>
-              <span className={idx === 0 ? 'text-yellow-400' : 'text-gray-500'}>
-                {count}
-              </span>
-            </div>
-          ))}
+          {sortedResults.map(([category, count], idx) => {
+            const isHighest = count === highestScore && highestScore > 0;
+            return (
+              <div key={category} className="flex items-center justify-between retro-font text-[10px] text-white my-3">
+                <span className={isHighest ? 'text-green-400' : 'text-gray-300'}>
+                  {idx + 1}. {category}
+                </span>
+                <span className={isHighest ? 'text-yellow-400' : 'text-gray-500'}>
+                  {count}
+                </span>
+              </div>
+            );
+          })}
         </div>
+
+        {}
+        <span className="retro-font text-gray-300 text-[10px] text-center mb-8 leading-loose">
+          Check the poster board to see what your highest scoring character does!
+        </span>
 
         <button 
           onClick={() => {
